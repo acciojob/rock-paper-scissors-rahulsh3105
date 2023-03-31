@@ -1,2 +1,53 @@
+.options {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.options button {
+  margin: 0 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.options button:hover {
+  transform: scale(1.1);
+}
+
+.results {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.results > div {
+  margin: 0 1rem;
+  font-size: 1.2rem;
+}
+
+.game-result {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  font-size: 2rem;
+}
+
+.game-result.won {
+  color: green;
+}
+
+.game-result.tie {
+  color: orange;
+}
+
+.game-result.lose {
+  color: red;
+}
 
 /* Your CSS Code here. */
