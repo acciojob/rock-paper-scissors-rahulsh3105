@@ -1,93 +1,113 @@
-//your code here
-// Define variables for tracking game state
-let numTurns = 0;
-let userPoints = 0;
-let computerPoints = 0;
-let roundsLeft = 0;
-let gameResult = '';
+var gameNumberEl = document.getElementById("game-number");
+  var gameContainerEl = document.getElementById("game-container");
+  var rockBtnEl = document.getElementById("rock");
+  var paperBtnEl = document.getElementById("paper");
+  var scissorBtnEl = document.getElementById("scissors");
+  var computerChooseEl = document.getElementById("computer-choose");
+  var roundResultEl = document.getElementById("round-result");
+  var userPointsEl = document.getElementById("user-points");
+  var computerPointsEl = document.getElementById("computer-points");
+  var roundsLeftEl = document.getElementById("rounds-left");
+  var gameResultEl = document.getElementById("game-result");
+ 
 
-// Define mapping for computer choice
-const computerChoice = {
-0: 'ROCK',
-1: 'PAPER',
-2: 'SCISSORS'
-};
+  const ROCK = 0;
+  const PAPER = 1;
+  const SCISSORS = 2;
+ 
 
-// Get DOM elements
-const gameNumber = document.getElementById('game-number');
-const playButton = document.getElementById('play-game');
-const rockButton = document.querySelector('.rock');
-const paperButton = document.querySelector('.paper');
-const scissorsButton = document.querySelector('.scissors');
-const roundsLeftDisplay = document.querySelector('[data-ns-test="rounds-left"]');
-const userPointsDisplay = document.querySelector('[data-ns-test="user-points"]');
-const computerPointsDisplay = document.querySelector('[data-ns-test="computer-points"]');
-const roundResultDisplay = document.querySelector('[data-ns-test="round-result"]');
-const gameResultDisplay = document.querySelector('[data-ns-test="game-result"]');
+  function playGame() {
+  userPoints = 0;
+  userPointsEl.innerText = 0;
+  computerPoints = 0;
+  computerPointsEl.innerText = 0;
+ 
 
-// Helper function to generate random integer between min and max (inclusive)
-function getRandomInt(min, max) {
-return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+  roundsLeft = parseInt(gameNumberEl.value, 10);
+  if (roundsLeft < 0) {
+  alert("Number of turns cannot be -ve");
+  } else {
+  roundsLeftEl.innerText = roundsLeft;
+  gameContainerEl.style.display = "block";
+ 
 
-// Function to determine winner of a round
-function getRoundResult(userChoice, computerChoice) {
-if (userChoice === computerChoice) {
-return 'TIE';
-} else if (
-(userChoice === 'ROCK' && computerChoice === 'SCISSORS') ||
-(userChoice === 'PAPER' && computerChoice === 'ROCK') ||
-(userChoice === 'SCISSORS' && computerChoice === 'PAPER')
-) {
-return 'WON';
-} else {
-return 'LOSE';
-}
-}
+  gameResultEl.style.display = "none";
+  }
+  }
+ 
 
-// Function to update game state and display results
-function updateGame(userChoice) {
-const computerChoiceNum = getRandomInt(0, 2);
-const computerChoiceText = computerChoice[computerChoiceNum];
-const roundResult = getRoundResult(userChoice, computerChoiceText);
+  // game variables
+  var userPoints = 0;
+  var computerPoints = 0;
+  var roundsLeft = parseInt(gameNumberEl.value, 10);
+  roundsLeftEl.innerText = roundsLeft;
+ 
 
-// Update game state based on round result
-if (roundResult === 'WON') {
-userPoints++;
-} else if (roundResult === 'LOSE') {
-computerPoints++;
-}
-roundsLeft--;
+ 
 
-// Update display of game state and round result
-roundsLeftDisplay.innerText = Rounds left: ${roundsLeft};
-userPointsDisplay.innerText = Your points: ${userPoints};
-computerPointsDisplay.innerText = Computer points: ${computerPoints};
-roundResultDisplay.innerText = Round result: ${roundResult};
+  function userChoose(e) {
+ 
 
-// Check if game is over and update game result
-if (roundsLeft === 0) {
-if (userPoints > computerPoints) {
-gameResult = 'WON';
-} else if (userPoints === computerPoints) {
-gameResult = 'TIE';
-} else {
-gameResult = 'LOSE';
-}
-gameResultDisplay.innerText = Game result: ${gameResult};
-}
-}
+  if (roundsLeft <= 0) return;
+ 
 
-// Add event listener to play button to start game
-playButton.addEventListener('click', function() {
-numTurns = parseInt(gameNumber.value);
-roundsLeft = numTurns;
-userPoints = 0;
-computerPoints = 0;
-gameResult = '';
-roundsLeftDisplay.innerText = Rounds left: ${roundsLeft};
-userPointsDisplay.innerText = Your points: ${userPoints};
-computerPointsDisplay.innerText = Computer points: ${computerPoints};
-roundResultDisplay.innerText = Round result: ;
-gameResultDisplay.innerText = Game result: ;
-});
+  const choices = ["ROCK", "PAPER", "SCISSORS"];
+  const outcomes = ["WON", "TIE", "LOSE"];
+  const userChoose = parseInt(e.target.value, 10);
+  const computerChoose = Math.floor(Math.random() * 3);
+  window.computerChoose = computerChoose
+  console.log(window.computerChoose);
+  computerChooseEl.innerText = choices[computerChoose];
+  var outcome = 1; // [win, tie, loose]
+ 
+
+  if ((choices[computerChoose] == 'ROCK' && choices[userChoose] == 'PAPER') || (choices[computerChoose] == 'SCISSORS' && choices[userChoose] == 'ROCK') || (choices[computerChoose] == 'PAPER' && choices[userChoose] == 'SCISSORS')) {
+  // use Wins
+  outcome = 0;
+  userPoints += 1;
+  } else if ((choices[computerChoose] == 'PAPER' && choices[userChoose] == 'ROCK') || (choices[computerChoose] == 'ROCK' && choices[userChoose] == 'SCISSORS') || (choices[computerChoose] == 'SCISSORS' && choices[userChoose] == 'PAPER')) {
+  // lose
+  outcome = 2;
+  computerPoints += 1;
+  } else {
+  // tie
+  outcome = 1;
+  }
+ 
+
+  // setting game variables after move
+  roundsLeft -= 1;
+ 
+
+ 
+
+  roundResultEl.innerText = `${outcomes[outcome]}`;
+  roundResultEl.style.display = "block";
+ 
+
+  userPointsEl.innerText = userPoints;
+  computerPointsEl.innerText = computerPoints;
+ 
+
+  roundsLeftEl.innerText = roundsLeft;
+ 
+
+  if (roundsLeft == 0) {
+  // game over
+  gameResultEl.innerText = `${outcomes[userPoints == computerPoints ? 1 : userPoints > computerPoints ? 0 : 2]}`;
+  gameResultEl.style.display = "block";
+ 
+
+  gameContainerEl.style.display = "none";
+ 
+
+  }
+ 
+
+  }
+ 
+
+  // button click
+  rockBtnEl.addEventListener('click', userChoose);
+  paperBtnEl.addEventListener('click', userChoose);
+  scissorBtnEl.addEventListener('click', userChoose);
